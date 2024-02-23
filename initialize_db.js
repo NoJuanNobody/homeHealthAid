@@ -4,6 +4,7 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
+  port:3306
 });
 
 con.connect(function(err) {
@@ -11,12 +12,11 @@ con.connect(function(err) {
   console.log("Connected!");
   var sql = `
 
-  CREATE DATABASE IF NOT EXISTS root;
+  CREATE DATABASE IF NOT EXISTS homeHealthAidDB;
 
-  USE root;
-  
-  -- Tasks Table
-  CREATE TABLE IF NOT EXISTS Tasks (
+  USE homeHealthAidDB;
+  -- Tasks
+  CREATE TABLE Tasks (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       UserId INT,
       Description TEXT,
@@ -25,17 +25,17 @@ con.connect(function(err) {
       DateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       ArchivedOn TIMESTAMP,
       CreatedBy VARCHAR(255),
-      FOREIGN KEY (UserId) REFERENCES Users(Id)
+      FOREIGN KEY (UserId) REFERENCES Users(UserId)
   );
-  
-  -- Task Types Table
-  CREATE TABLE IF NOT EXISTS TaskTypes (
+  -- tasktypes
+  CREATE TABLE TaskTypes (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       TaskType VARCHAR(255) UNIQUE
   );
   
-  -- Users Table
-  CREATE TABLE IF NOT EXISTS Users (
+  
+  -- User Table
+  CREATE TABLE Users (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       Username VARCHAR(255),
       FirstName VARCHAR(255),
@@ -47,14 +47,16 @@ con.connect(function(err) {
       UNIQUE (Username)
   );
   
+  
   -- User Types Table
-  CREATE TABLE IF NOT EXISTS UserTypes (
+  CREATE TABLE UserTypes (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       UserType VARCHAR(255) UNIQUE
   );
   
-  -- Hours Worked Table
-  CREATE TABLE IF NOT EXISTS HoursWorked (
+  
+  -- Event Table
+  CREATE TABLE HoursWorked (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       EventTypeId INT,
       Date DATETIME,
@@ -64,13 +66,13 @@ con.connect(function(err) {
   );
   
   -- Event Types Table
-  CREATE TABLE IF NOT EXISTS EventTypes (
+  CREATE TABLE EventTypes (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       Description VARCHAR(255) UNIQUE
   );
   
-  -- Account Info Table
-  CREATE TABLE IF NOT EXISTS AccountInfo (
+  -- account info
+  CREATE TABLE AccountInfo (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       Info TEXT,
       InfoTypeId INT,
@@ -79,11 +81,12 @@ con.connect(function(err) {
       FOREIGN KEY (UserId) REFERENCES Users(Id)
   );
   
-  -- Account Info Types Table
-  CREATE TABLE IF NOT EXISTS AccountInfoTypes (
+  -- acountypes
+  CREATE TABLE AccountInfoTypes (
       Id INT AUTO_INCREMENT PRIMARY KEY,
       InfoType VARCHAR(255) UNIQUE
   );
+  
   
   `;
   con.query(sql, function (err) {
