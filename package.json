@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.42",
+    "bcryptjs": "^2.4.3",
     "mysql2": "^3.9.1",
     "next": "14.1.0",
     "react": "^18",
